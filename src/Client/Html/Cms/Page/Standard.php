@@ -305,6 +305,15 @@ class Standard
 
 		$path = '/' . trim( $view->param( 'path', $view->request()->getUri()->getPath() ), '/' );
 
+		$paths = explode("/", $path);
+        if (count($paths) > 1 && $paths[1] == app()->getLocale()) {
+            unset($paths[1]);
+            $path = implode("/", $paths);
+            if (empty($path)) {
+                $path = "/";
+            }
+        }
+
 		if( $page = $controller->uses( $domains )->compare( '==', 'cms.url', $path )->search()->first() )
 		{
 			$this->addMetaItems( $page, $expire, $tags );
